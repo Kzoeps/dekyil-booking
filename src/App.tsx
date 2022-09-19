@@ -23,7 +23,7 @@ function App() {
 	};
 
 	const handleBookingSubmission = async (values: BookingForm) => {
-		createBooking(values);
+		await createBooking(values);
 	}
 
 	return (
