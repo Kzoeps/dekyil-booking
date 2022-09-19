@@ -6,13 +6,14 @@ import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {Button, MenuItem, Stack, TextField as MuiTextField} from '@mui/material';
 import {DatePicker, LocalizationProvider} from '@mui/x-date-pickers';
 import dayjs, {Dayjs} from 'dayjs';
+import {BookingForm} from './types';
+import {createBooking} from './utils';
 
 function App() {
-	const [count, setCount] = useState(0);
-	const initValues = {
+	const initValues: BookingForm = {
 		firstName: '',
 		lastName: '',
-		date: '',
+		date: undefined,
 		rooms: 1
 	};
 
@@ -21,23 +22,16 @@ function App() {
 																				   value={room}>{room}</MenuItem>);
 	};
 
-	const convDateToReadable = (date: Dayjs): string => {
-		const stringiDate = dayjs(date).format(`DD/MM/YYYY`);
-		return stringiDate;
-	};
-
-	const convStringToDate = (date: string): Dayjs => {
-		return dayjs(date, 'DD/MM/YYYY');
-	};
+	const handleBookingSubmission = async (values: BookingForm) => {
+		createBooking(values);
+	}
 
 	return (
 		<LocalizationProvider dateAdapter={AdapterDayjs}>
 			<div style={{width: '100%', height: '80px',  boxShadow: '0 2px 25px 2px gray'}}>
 				Dekyil Guest House
 			</div>
-			<Formik initialValues={initValues} onSubmit={(values) => {
-				console.log(convDateToReadable(values.date as unknown as Dayjs));
-			}}>
+			<Formik initialValues={initValues} onSubmit={handleBookingSubmission}>
 				{(formik) => (
 					<Form>
 						<Stack spacing={2} padding={5} mt={10}>
