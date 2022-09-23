@@ -1,19 +1,21 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './App.css';
 import {Field, Form, Formik} from 'formik';
 import {Select, TextField} from 'formik-mui';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {Button, MenuItem, Stack, TextField as MuiTextField} from '@mui/material';
 import {DatePicker, LocalizationProvider} from '@mui/x-date-pickers';
-import dayjs, {Dayjs} from 'dayjs';
 import {BookingForm} from './types';
 import {createBooking} from './utils';
 
 function App() {
 	const initValues: BookingForm = {
 		firstName: '',
+		phoneNumber: '',
+		email: '',
 		lastName: '',
-		date: undefined,
+		toDate: undefined,
+		fromDate: undefined,
 		rooms: 1
 	};
 
@@ -37,16 +39,27 @@ function App() {
 						<Stack spacing={2} padding={5} mt={10}>
 							<Field label={'First Name'} name={'firstName'} component={TextField}/>
 							<Field label={'Last Name'} name={'lastName'} component={TextField}/>
+							<Field label={'Email'} name={'email'} component={TextField}/>
+							<Field label={'Phone number'} name={'phoneNumber'} component={TextField}/>
 							<Field label={'Number of rooms'} name={'rooms'} component={Select}>
 								{getRoomSelects()}
 							</Field>
 
 							<DatePicker
-								label="Reservation Date"
+								label="Reservation Date from"
 								inputFormat={'DD/MM/YYYY'}
-								value={formik.values.date}
+								value={formik.values.fromDate}
 								onChange={(newValue) => {
-									formik.setFieldValue('date', newValue);
+									formik.setFieldValue('fromDate', newValue);
+								}}
+								renderInput={(params) => <MuiTextField {...params} />}
+							/>
+							<DatePicker
+								label="Reservation Date to"
+								inputFormat={'DD/MM/YYYY'}
+								value={formik.values.toDate}
+								onChange={(newValue) => {
+									formik.setFieldValue('toDate', newValue);
 								}}
 								renderInput={(params) => <MuiTextField {...params} />}
 							/>
